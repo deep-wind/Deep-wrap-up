@@ -123,22 +123,22 @@ def _get_article_summary(sentences, sentence_weight, threshold):
     return article_summary
 
 def _run_article_summary(article,sentence_length):
-    
+    st.write("func1")
     #creating a dictionary for the word frequency table
     frequency_table = _create_dictionary_table(article)
-
+    st.write("func2")
     #tokenizing the sentences
     sentences = sent_tokenize(article)
-
+    st.write("func3")
     #algorithm for scoring a sentence by its words
     sentence_scores = _calculate_sentence_scores(sentences, frequency_table)
-
+    st.write("func4")
     #getting the threshold
     threshold = _calculate_average_score(sentence_scores)
-    
+    st.write("func5") 
     #producing the summary
     article_summary = _get_article_summary(sentences, sentence_scores, sentence_length*threshold )
-
+    st.write("func5")
     return article_summary
 
 
