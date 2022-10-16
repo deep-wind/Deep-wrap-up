@@ -19,3 +19,4 @@ moviepy
 jellyfish
 matplotlib
 gTTS
+bs4
