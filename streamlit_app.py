@@ -204,39 +204,7 @@ if __name__ == '__main__':
                     #st.write("hello2")	
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>EXTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                     st.write(summary_results)
-                    
-                   
-                    # model = T5ForConditionalGeneration.from_pretrained('t5-small')
-                    # tokenizer = T5Tokenizer.from_pretrained('t5-small')
-                    # device = torch.device('cpu')
-                    
-                    # preprocess_text = summary_results.strip().replace("\n","")
-                    # t5_prepared_Text = "summarize: "+preprocess_text
-                    # print ("original text preprocessed: \n", preprocess_text)
-                    
-                    # tokenized_text = tokenizer.encode(t5_prepared_Text, return_tensors="pt").to(device)
-                    
-                    
-                    # # summmarize 
-                    # summary_ids = model.generate(tokenized_text,
-                    #                                     num_beams=4,
-                    #                                     no_repeat_ngram_size=1,
-                    #                                     min_length=300,
-                    #                                     max_length=1000,
-                    #                                     early_stopping=True)
-                    
-                    # output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-                    
-                    # #print ("\n\nSummarized text: \n",output)
-                    # #text = ("a young tree, vine, shrub, or herb planted or suitable for planting. b : any of a kingdom (Plantae) of multicellular eukaryotic mostly photosynthetic organisms typically lacking locomotive movement or obvious nervous or sensory organs and possessing cellulose cell")
-                    
-                
-                    # st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>ABSTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
-                    # st.write(output)
-                    
-                    print ("\n\nSummarized text: \n",output)
-                    #text = ("a young tree, vine, shrub, or herb planted or suitable for planting. b : any of a kingdom (Plantae) of multicellular eukaryotic mostly photosynthetic organisms typically lacking locomotive movement or obvious nervous or sensory organs and possessing cellulose cell")
-                    
+
                 
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>ABSTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                     #st.write(output)
