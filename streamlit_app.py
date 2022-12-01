@@ -93,7 +93,7 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
 def extractive_summary(formatted_article_text,summary_length):		
     sentence_list = sent_tokenize(formatted_article_text)
     stop_words = stopwords.words('english')
-    st.write(stop_words)
+    #st.write(stop_words)
     word_frequencies = {}
     for word in word_tokenize(formatted_article_text):
         word=word.lower()
