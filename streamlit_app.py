@@ -90,10 +90,8 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
         href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download {file_label}</a>'
         return href
 
-def extractive_summary(formatted_article_text,summary_length):	
-    st.write("hi")	
+def extractive_summary(formatted_article_text,summary_length):		
     sentence_list = sent_tokenize(formatted_article_text)
-    st.write(sentence_list)
     stop_words = stopwords.words('english')
     st.write(stop_words)
     word_frequencies = {}
@@ -104,20 +102,20 @@ def extractive_summary(formatted_article_text,summary_length):
                 word_frequencies[word] = 1
             else:
                 word_frequencies[word] += 1
-    st.write(word_frequencies)            
+    print(word_frequencies)            
     
     sentence_scores = {}
     visited=[]
     for sent in sentence_list:
         visited=[]
         sentence_wordcount_without_stop_words = 0
-        print(word_tokenize(sent.lower()))
+        #print(word_tokenize(sent.lower()))
         for word in word_tokenize(sent.lower()):
             flag=0
             if word in word_frequencies.keys():
                 if word not in visited:
                     visited.append(word)
-                    st.write("$$$$$$$$without stop word:$$$$$$$",word)
+                    #st.write("$$$$$$$$without stop word:$$$$$$$",word)
                     sentence_wordcount_without_stop_words+=1
                     if sent not in sentence_scores.keys():
                         sentence_scores[sent] = word_frequencies[word]
@@ -125,7 +123,7 @@ def extractive_summary(formatted_article_text,summary_length):
                         sentence_scores[sent] += word_frequencies[word]
         sentence_scores[sent] = sentence_scores[sent] / sentence_wordcount_without_stop_words
     
-    st.write("\n****sentence_scores****\n",sentence_scores) 
+    print("\n****sentence_scores****\n",sentence_scores) 
     sum_values = 0
     for entry in sentence_scores:
         sum_values += sentence_scores[entry]
@@ -138,16 +136,15 @@ def extractive_summary(formatted_article_text,summary_length):
     article_summary = ''
     
     for sentence in sentence_list:
-        st.write("\n******************************************************************\n")
-        st.write("sentence:",sentence)
-        st.write("weight",sentence_scores[sentence])
-        st.write("threshold",average_score)
-        st.write("******************************************************************\n")
-        if sentence in sentence_scores and sentence_scores[sentence] >= (1.15* average_score):
+        #st.write("\n******************************************************************\n")
+        #st.write("sentence:",sentence)
+        #st.write("weight",sentence_scores[sentence])
+        #st.write("threshold",average_score)
+        #st.write("******************************************************************\n")
+        if sentence in sentence_scores and sentence_scores[sentence] >= (summary_length * average_score):
     
             article_summary += " " + sentence
-            sentence_counter += 1
-    st.write (article_summary)     
+            sentence_counter += 1   
     return article_summary
 
 if __name__ == '__main__':
