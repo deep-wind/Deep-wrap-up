@@ -98,10 +98,10 @@ def extractive_summary(formatted_article_text,summary_length):
 	for word in word_tokenize(formatted_article_text):
 	    word=word.lower()
 	    if word not in stopwords:
-		if word not in word_frequencies.keys():
-		    word_frequencies[word] = 1
-		else:
-		    word_frequencies[word] += 1
+	    	if word not in word_frequencies.keys():
+	    		word_frequencies[word] = 1
+	    	else:
+	    		word_frequencies[word] += 1
 	print(word_frequencies)            
 
 	sentence_scores = {}
