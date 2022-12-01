@@ -82,88 +82,6 @@ def read_pdf(file):
 
 	return all_page_text
 
-def _create_dictionary_table(text_string) -> dict:
-   
-    #removing stop words
-    stop_words = set(stopwords.words("english"))
-    #reducing words to their root form
-    stem = PorterStemmer()    
-    words = word_tokenize(text_string)
-    
-	    
-    #creating dictionary for the word frequency table
-    frequency_table = dict()
-    for wd in words:
-        wd = stem.stem(wd)
-        if wd in stop_words:
-            continue
-        if wd in frequency_table:
-            frequency_table[wd] += 1
-        else:
-            frequency_table[wd] = 1
-
-    return frequency_table
-
-
-def _calculate_sentence_scores(sentences, frequency_table) -> dict:   
-
-    #algorithm for scoring a sentence by its words
-    sentence_weight = dict()
-
-    for sentence in sentences:
-        sentence_wordcount = (len(word_tokenize(sentence)))
-        sentence_wordcount_without_stop_words = 0
-        for word_weight in frequency_table:
-            if word_weight in sentence.lower():
-                sentence_wordcount_without_stop_words += 1
-                if sentence[:7] in sentence_weight:
-                    sentence_weight[sentence[:7]] += frequency_table[word_weight]
-                else:
-                    sentence_weight[sentence[:7]] = frequency_table[word_weight]
-
-        sentence_weight[sentence[:7]] = sentence_weight[sentence[:7]] / sentence_wordcount_without_stop_words
-
-       
-
-    return sentence_weight
-
-def _calculate_average_score(sentence_weight) -> int:
-   
-    #calculating the average score for the sentences
-    sum_values = 0
-    for entry in sentence_weight:
-        sum_values += sentence_weight[entry]
-
-    #getting sentence average value from source text
-    average_score = (sum_values / len(sentence_weight))
-
-    return average_score
-
-def _get_article_summary(sentences, sentence_weight, threshold):
-    sentence_counter = 0
-    article_summary = ''
-
-    for sentence in sentences:
-        if sentence[:7] in sentence_weight and sentence_weight[sentence[:7]] >= (threshold):
-            article_summary += " " + sentence
-            sentence_counter += 1
-
-    return article_summary
-
-def _run_article_summary(article,sentence_length):
-    
-    #creating a dictionary for the word frequency table
-    frequency_table = _create_dictionary_table(article)
-    #tokenizing the sentences
-    sentences = sent_tokenize(article)
-    #algorithm for scoring a sentence by its words
-    sentence_scores = _calculate_sentence_scores(sentences, frequency_table)
-    #getting the threshold
-    threshold = _calculate_average_score(sentence_scores)	   
-    #producing the summary
-    article_summary = _get_article_summary(sentences, sentence_scores, sentence_length*threshold )	
-    return article_summary
-
 
 def get_binary_file_downloader_html(bin_file, file_label='File'):
         with open(bin_file, 'rb') as f:
@@ -172,7 +90,62 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
         href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download {file_label}</a>'
         return href
 
+def extractive_summary(formatted_article_text,summary_length):	
+	sentence_list = sent_tokenize(formatted_article_text)
+	stopwords = stopwords.words('english')
+	print(stopwords)
+	word_frequencies = {}
+	for word in word_tokenize(formatted_article_text):
+	    word=word.lower()
+	    if word not in stopwords:
+		if word not in word_frequencies.keys():
+		    word_frequencies[word] = 1
+		else:
+		    word_frequencies[word] += 1
+	print(word_frequencies)            
 
+	sentence_scores = {}
+	visited=[]
+	for sent in sentence_list:
+	    visited=[]
+	    sentence_wordcount_without_stop_words = 0
+	    print(word_tokenize(sent.lower()))
+	    for word in word_tokenize(sent.lower()):
+		flag=0
+		if word in word_frequencies.keys():
+		    if word not in visited:
+			visited.append(word)
+			print("$$$$$$$$without stop word:$$$$$$$",word)
+			sentence_wordcount_without_stop_words+=1
+			if sent not in sentence_scores.keys():
+			    sentence_scores[sent] = word_frequencies[word]
+			else:
+			    sentence_scores[sent] += word_frequencies[word]
+	    sentence_scores[sent] = sentence_scores[sent] / sentence_wordcount_without_stop_words
+
+	print("\n****sentence_scores****\n",sentence_scores) 
+	sum_values = 0
+	for entry in sentence_scores:
+	    sum_values += sentence_scores[entry]
+
+	#getting sentence average value from source text
+	average_score = (sum_values / len(sentence_scores))
+	print(average_score)     
+
+	sentence_counter = 0
+	article_summary = ''
+
+	for sentence in sentence_list:
+	    print("\n******************************************************************\n")
+	    print("sentence:",sentence)
+	    print("weight",sentence_scores[sentence])
+	    print("threshold",average_score)
+	    print("******************************************************************\n")
+	    if sentence in sentence_scores and sentence_scores[sentence] >= (summary_length * average_score):
+
+		article_summary += " " + sentence
+		sentence_counter += 1
+	return article_summary
 
 if __name__ == '__main__':
        st.sidebar.markdown("<h1 style='text-align: center; color: black;'>🧭 Navigation Bar 🧭</h1>", unsafe_allow_html=True)
@@ -200,7 +173,7 @@ if __name__ == '__main__':
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>TEXT</h1>", unsafe_allow_html=True)
                     st.write(article_content)
                     #st.write("hello1")			
-                    summary_results = _run_article_summary(article_content,summary_length)
+                    summary_results = extractive_summary(article_content,summary_length)
                     #st.write("hello2")	
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>EXTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                     st.write(summary_results)
@@ -232,9 +205,6 @@ if __name__ == '__main__':
                 
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>ABSTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                     st.write(output)		
-                
-                    st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>ABSTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
-                    #st.write(output)
             
                     lines=nltk.tokenize.sent_tokenize(summary_results)
                     st.write(lines)
@@ -334,7 +304,7 @@ if __name__ == '__main__':
         
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>TEXT</h1>", unsafe_allow_html=True)
                     st.write(article_read)
-                    summary_results = _run_article_summary(article_read,summary_length)
+                    summary_results = extractive_summary(article_content,summary_length)
                     st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>EXTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                     st.write(summary_results)
                    
@@ -478,7 +448,7 @@ if __name__ == '__main__':
             
                         st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>TEXT</h1>", unsafe_allow_html=True)
                         st.write(article_read)
-                        summary_results = _run_article_summary(article_read,summary_length)
+                        summary_results =extractive_summary(article_content,summary_length)
                         st.markdown("<h1 style='text-align: center; color:black ;background-color:powderblue;font-size:16pt'>EXTRACTIVE SUMMARY</h1>", unsafe_allow_html=True)
                         st.write(summary_results)
                         
