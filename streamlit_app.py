@@ -91,61 +91,62 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
         return href
 
 def extractive_summary(formatted_article_text,summary_length):	
-	sentence_list = sent_tokenize(formatted_article_text)
-	stopwords = stopwords.words('english')
-	print(stopwords)
-	word_frequencies = {}
-	for word in word_tokenize(formatted_article_text):
-	    word=word.lower()
-	    if word not in stopwords:
-	    	if word not in word_frequencies.keys():
-	    		word_frequencies[word] = 1
-	    	else:
-	    		word_frequencies[word] += 1
-	print(word_frequencies)            
-
-	sentence_scores = {}
-	visited=[]
-	for sent in sentence_list:
-	    visited=[]
-	    sentence_wordcount_without_stop_words = 0
-	    print(word_tokenize(sent.lower()))
-	    for word in word_tokenize(sent.lower()):
-		flag=0
-		if word in word_frequencies.keys():
-		    if word not in visited:
-			visited.append(word)
-			print("$$$$$$$$without stop word:$$$$$$$",word)
-			sentence_wordcount_without_stop_words+=1
-			if sent not in sentence_scores.keys():
-			    sentence_scores[sent] = word_frequencies[word]
-			else:
-			    sentence_scores[sent] += word_frequencies[word]
-	    sentence_scores[sent] = sentence_scores[sent] / sentence_wordcount_without_stop_words
-
-	print("\n****sentence_scores****\n",sentence_scores) 
-	sum_values = 0
-	for entry in sentence_scores:
-	    sum_values += sentence_scores[entry]
-
-	#getting sentence average value from source text
-	average_score = (sum_values / len(sentence_scores))
-	print(average_score)     
-
-	sentence_counter = 0
-	article_summary = ''
-
-	for sentence in sentence_list:
-	    print("\n******************************************************************\n")
-	    print("sentence:",sentence)
-	    print("weight",sentence_scores[sentence])
-	    print("threshold",average_score)
-	    print("******************************************************************\n")
-	    if sentence in sentence_scores and sentence_scores[sentence] >= (summary_length * average_score):
-
-		article_summary += " " + sentence
-		sentence_counter += 1
-	return article_summary
+    sentence_list = sent_tokenize(formatted_article_text)
+    stopwords = stopwords.words('english')
+    print(stopwords)
+    word_frequencies = {}
+    for word in word_tokenize(formatted_article_text):
+        word=word.lower()
+        if word not in stopwords:
+            if word not in word_frequencies.keys():
+                word_frequencies[word] = 1
+            else:
+                word_frequencies[word] += 1
+    print(word_frequencies)            
+    
+    sentence_scores = {}
+    visited=[]
+    for sent in sentence_list:
+        visited=[]
+        sentence_wordcount_without_stop_words = 0
+        print(word_tokenize(sent.lower()))
+        for word in word_tokenize(sent.lower()):
+            flag=0
+            if word in word_frequencies.keys():
+                if word not in visited:
+                    visited.append(word)
+                    print("$$$$$$$$without stop word:$$$$$$$",word)
+                    sentence_wordcount_without_stop_words+=1
+                    if sent not in sentence_scores.keys():
+                        sentence_scores[sent] = word_frequencies[word]
+                    else:
+                        sentence_scores[sent] += word_frequencies[word]
+        sentence_scores[sent] = sentence_scores[sent] / sentence_wordcount_without_stop_words
+    
+    print("\n****sentence_scores****\n",sentence_scores) 
+    sum_values = 0
+    for entry in sentence_scores:
+        sum_values += sentence_scores[entry]
+    
+    #getting sentence average value from source text
+    average_score = (sum_values / len(sentence_scores))
+    print(average_score)     
+       
+    sentence_counter = 0
+    article_summary = ''
+    
+    for sentence in sentence_list:
+        print("\n******************************************************************\n")
+        print("sentence:",sentence)
+        print("weight",sentence_scores[sentence])
+        print("threshold",average_score)
+        print("******************************************************************\n")
+        if sentence in sentence_scores and sentence_scores[sentence] >= (1.15* average_score):
+    
+            article_summary += " " + sentence
+            sentence_counter += 1
+            
+    return article_summary
 
 if __name__ == '__main__':
        st.sidebar.markdown("<h1 style='text-align: center; color: black;'>🧭 Navigation Bar 🧭</h1>", unsafe_allow_html=True)
