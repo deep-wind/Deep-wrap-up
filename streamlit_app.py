@@ -91,6 +91,7 @@ def get_binary_file_downloader_html(bin_file, file_label='File'):
         return href
 
 def extractive_summary(formatted_article_text,summary_length):	
+    st.write("hi")	
     sentence_list = sent_tokenize(formatted_article_text)
     stopwords = stopwords.words('english')
     print(stopwords)
