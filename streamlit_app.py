@@ -94,7 +94,7 @@ def extractive_summary(formatted_article_text,summary_length):
     st.write("hi")	
     sentence_list = sent_tokenize(formatted_article_text)
     stopwords = stopwords.words('english')
-    print(stopwords)
+    st.write(stopwords)
     word_frequencies = {}
     for word in word_tokenize(formatted_article_text):
         word=word.lower()
@@ -103,7 +103,7 @@ def extractive_summary(formatted_article_text,summary_length):
                 word_frequencies[word] = 1
             else:
                 word_frequencies[word] += 1
-    print(word_frequencies)            
+    st.write(word_frequencies)            
     
     sentence_scores = {}
     visited=[]
@@ -116,7 +116,7 @@ def extractive_summary(formatted_article_text,summary_length):
             if word in word_frequencies.keys():
                 if word not in visited:
                     visited.append(word)
-                    print("$$$$$$$$without stop word:$$$$$$$",word)
+                    st.write("$$$$$$$$without stop word:$$$$$$$",word)
                     sentence_wordcount_without_stop_words+=1
                     if sent not in sentence_scores.keys():
                         sentence_scores[sent] = word_frequencies[word]
@@ -124,7 +124,7 @@ def extractive_summary(formatted_article_text,summary_length):
                         sentence_scores[sent] += word_frequencies[word]
         sentence_scores[sent] = sentence_scores[sent] / sentence_wordcount_without_stop_words
     
-    print("\n****sentence_scores****\n",sentence_scores) 
+    st.write("\n****sentence_scores****\n",sentence_scores) 
     sum_values = 0
     for entry in sentence_scores:
         sum_values += sentence_scores[entry]
@@ -137,16 +137,16 @@ def extractive_summary(formatted_article_text,summary_length):
     article_summary = ''
     
     for sentence in sentence_list:
-        print("\n******************************************************************\n")
-        print("sentence:",sentence)
-        print("weight",sentence_scores[sentence])
-        print("threshold",average_score)
-        print("******************************************************************\n")
+        st.write("\n******************************************************************\n")
+        st.write("sentence:",sentence)
+        st.write("weight",sentence_scores[sentence])
+        st.write("threshold",average_score)
+        st.write("******************************************************************\n")
         if sentence in sentence_scores and sentence_scores[sentence] >= (1.15* average_score):
     
             article_summary += " " + sentence
             sentence_counter += 1
-            
+    st.write (article_summary)     
     return article_summary
 
 if __name__ == '__main__':
