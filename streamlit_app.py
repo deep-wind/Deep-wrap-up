@@ -94,12 +94,12 @@ def extractive_summary(formatted_article_text,summary_length):
     st.write("hi")	
     sentence_list = sent_tokenize(formatted_article_text)
     st.write(sentence_list)
-    stopwords = stopwords.words('english')
-    st.write(stopwords)
+    stop_words = stopwords.words('english')
+    st.write(stop_words)
     word_frequencies = {}
     for word in word_tokenize(formatted_article_text):
         word=word.lower()
-        if word not in stopwords:
+        if word not in stop_words:
             if word not in word_frequencies.keys():
                 word_frequencies[word] = 1
             else:
