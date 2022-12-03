@@ -196,8 +196,8 @@ if __name__ == '__main__':
                     summary_ids = model.generate(tokenized_text,
                                                         num_beams=4,
                                                         no_repeat_ngram_size=1,
-                                                        min_length=50,
-                                                        max_length=100,
+                                                        min_length=200,
+                                                        max_length=300,
                                                         early_stopping=True)
                     
                     #output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
@@ -327,8 +327,8 @@ if __name__ == '__main__':
                     summary_ids = model.generate(tokenized_text,
                                                         num_beams=4,
                                                         no_repeat_ngram_size=1,
-                                                        min_length=50,
-                                                        max_length=100,
+                                                        min_length=200,
+                                                        max_length=300,
                                                         early_stopping=True)
                     
                     output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
@@ -470,8 +470,8 @@ if __name__ == '__main__':
                         summary_ids = model.generate(tokenized_text,
                                                             num_beams=4,
                                                             no_repeat_ngram_size=1,
-                                                            min_length=50,
-                                                            max_length=100,
+                                                            min_length=200,
+                                                            max_length=300,
                                                             early_stopping=True)
                         
                         output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
