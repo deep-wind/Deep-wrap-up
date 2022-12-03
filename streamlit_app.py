@@ -196,11 +196,11 @@ if __name__ == '__main__':
                     summary_ids = model.generate(tokenized_text,
                                                         num_beams=4,
                                                         no_repeat_ngram_size=1,
-                                                        min_length=300,
-                                                        max_length=1000,
+                                                        min_length=50,
+                                                        max_length=100,
                                                         early_stopping=True)
                     
-                    output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+                    #output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
                     
                     #print ("\n\nSummarized text: \n",output)
                     #text = ("a young tree, vine, shrub, or herb planted or suitable for planting. b : any of a kingdom (Plantae) of multicellular eukaryotic mostly photosynthetic organisms typically lacking locomotive movement or obvious nervous or sensory organs and possessing cellulose cell")
@@ -327,8 +327,8 @@ if __name__ == '__main__':
                     summary_ids = model.generate(tokenized_text,
                                                         num_beams=4,
                                                         no_repeat_ngram_size=1,
-                                                        min_length=300,
-                                                        max_length=1000,
+                                                        min_length=50,
+                                                        max_length=100,
                                                         early_stopping=True)
                     
                     output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
@@ -470,8 +470,8 @@ if __name__ == '__main__':
                         summary_ids = model.generate(tokenized_text,
                                                             num_beams=4,
                                                             no_repeat_ngram_size=1,
-                                                            min_length=300,
-                                                            max_length=1000,
+                                                            min_length=50,
+                                                            max_length=100,
                                                             early_stopping=True)
                         
                         output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
