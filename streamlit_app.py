@@ -197,7 +197,7 @@ if __name__ == '__main__':
                                                         num_beams=4,
                                                         no_repeat_ngram_size=1,
                                                         min_length=200,
-                                                        max_length=300,
+                                                        max_length=700,
                                                         early_stopping=True)
                     
                     #output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
