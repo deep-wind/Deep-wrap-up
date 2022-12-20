@@ -21,7 +21,7 @@ from moviepy.editor import *
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
-
+from simplet5 import SimpleT5
 app_name = "Deep Wrap-UP"
 
 # Start the app in wide-mode
